@@ -1,0 +1,49 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "main.py --demo (mock data)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/main.py",
+      "args": ["--demo"],
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "env": { "PYTHONPATH": "${workspaceFolder}" }
+    },
+    {
+      "name": "main.py --fetch (real tushare)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/main.py",
+      "args": ["--fetch", "--start", "2020-01-01", "--end", "2022-12-31"],
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "main.py --train",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/main.py",
+      "args": ["--train"],
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "init_db.py",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/data/db/init_db.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "pytest: current file",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["-v", "${file}"],
+      "console": "integratedTerminal",
+      "justMyCode": false
+    }
+  ]
+}

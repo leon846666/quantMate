@@ -1,0 +1,21 @@
+# ============================================================
+# 各策略独立参数 (互不干扰)
+# 新增策略时在此加一个 key, 策略类从 settings 读取即可
+# ============================================================
+
+momentum:
+  lookback: 20                # 动量回看窗口(交易日)
+  top_n: 30
+  weight: equal               # equal | score
+
+mean_reversion:
+  lookback: 10
+  zscore_threshold: -1.5
+  top_n: 30
+
+lightgbm:
+  # 训练参数见 settings.yaml -> model.lightgbm
+  # 这里只放策略层面的参数
+  top_n: 30
+  long_only: true
+  group_count: 9              # GROUP9 分组回测

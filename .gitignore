@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.eggs/
+.venv/
+venv/
+.env
+.envrc
+
+# Caches / data (too big for git)
+data/cache/*.csv
+data/market/*.parquet
+logs/*.log
+reports/
+*.log
+
+# IDE
+.idea/
+*.swp
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Tests / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Models
+*.pkl
+*.joblib
+*.txt.gz
+models/*.bin
+
+# Secrets
+config/secrets.yaml

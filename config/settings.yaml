@@ -1,0 +1,75 @@
+# ============================================================
+# quantMate 全局配置
+# ============================================================
+
+project:
+  name: quantMate
+  timezone: Asia/Shanghai
+
+# ---------- 数据源 ----------
+data_source:
+  # 主数据源: tushare | akshare | mock
+  primary: tushare
+  tushare:
+    # 从 https://tushare.pro 获取你的 token，替换下面字符串
+    # 也可以通过环境变量 TUSHARE_TOKEN 覆盖
+    token: "YOUR_TUSHARE_TOKEN_HERE"
+    timeout: 30
+  akshare:
+    timeout: 30
+
+# ---------- 数据库 (PostgreSQL) ----------
+database:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: "postgres"           # 也可通过环境变量 QUANTMATE_DB_PASSWORD 覆盖
+  database: quantmate            # 程序会自动创建此库 (init_db.py)
+  # SQLAlchemy URL 会由 utils/config.py 拼接, 无需手动维护
+
+# ---------- 本地文件存储 ----------
+storage:
+  cache_dir: data/cache          # CSV 缓存
+  market_dir: data/market        # 日线 OHLCV parquet
+  logs_dir: logs
+  reports_dir: reports
+
+# ---------- 回测 ----------
+backtest:
+  start_date: "2018-01-01"
+  end_date:   "2022-12-31"
+  initial_cash: 1_000_000
+  commission_rate: 0.0003        # 万三
+  slippage_bps: 5                # 万五滑点
+  rebalance_freq: "W-FRI"        # 每周五调仓 (pandas offset alias)
+  top_n: 30                      # 取前 N 只买入
+  universe: "csi500"             # csi300 | csi500 | csi800 | all
+
+# ---------- 模型 ----------
+model:
+  label_horizon: 5               # 未来 5 日收益作为标签
+  train_start: "2018-01-01"
+  train_end:   "2021-12-31"
+  valid_start: "2022-01-01"
+  valid_end:   "2022-06-30"
+  test_start:  "2022-07-01"
+  test_end:    "2022-12-31"
+  lightgbm:
+    objective: regression
+    metric: rmse
+    num_leaves: 63
+    learning_rate: 0.05
+    feature_fraction: 0.8
+    bagging_fraction: 0.8
+    bagging_freq: 5
+    min_data_in_leaf: 200
+    num_boost_round: 500
+    early_stopping_rounds: 50
+    verbose: -1
+
+# ---------- 日志 ----------
+logging:
+  level: INFO                    # DEBUG | INFO | WARNING | ERROR
+  file: logs/quantmate.log
+  rotate_mb: 20
+  keep: 5

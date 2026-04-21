@@ -1,0 +1,30 @@
+# --- core ---
+pandas>=2.0
+numpy>=1.24
+pyarrow>=14.0          # parquet
+pyyaml>=6.0
+
+# --- db ---
+psycopg2-binary>=2.9   # PostgreSQL driver
+SQLAlchemy>=2.0
+
+# --- data source ---
+tushare>=1.4
+akshare>=1.12          # optional fallback; free, no token needed
+requests>=2.31
+
+# --- ML ---
+lightgbm>=4.1
+scikit-learn>=1.3
+scipy>=1.11
+
+# --- viz ---
+matplotlib>=3.8
+seaborn>=0.13
+plotly>=5.18
+
+# --- dev / test ---
+pytest>=7.4
+python-dotenv>=1.0
+rich>=13.7             # nicer logs
+tqdm>=4.66
