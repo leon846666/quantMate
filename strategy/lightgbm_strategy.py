@@ -14,7 +14,7 @@ from __future__ import annotations
 import pickle
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 import numpy as np
 import pandas as pd
@@ -73,11 +73,13 @@ def train_lightgbm(
     train_set = lgb.Dataset(X_train, y_train)
     valid_sets = [train_set]
     valid_names = ["train"]
-    callbacks = [lgb.log_evaluation(period=50)]
+    callbacks: list[Any] = [lgb.log_evaluation(period=50)]
     if X_valid is not None and y_valid is not None:
         valid_sets.append(lgb.Dataset(X_valid, y_valid, reference=train_set))
         valid_names.append("valid")
-        callbacks.append(lgb.early_stopping(params.early_stopping_rounds, verbose=False))
+        callbacks.append(
+            lgb.early_stopping(params.early_stopping_rounds, verbose=False)
+        )
 
     booster = lgb.train(
         p,
@@ -129,10 +131,9 @@ class LightGBMStrategy(BaseStrategy):
         X = panel[self.feature_cols].astype(float).fillna(0)
         panel = panel.copy()
         panel["score"] = self.booster.predict(X)
-        panel["group"] = (
-            panel.groupby("trade_date", group_keys=False)["score"]
-                 .transform(lambda s: assign_groups(s, self.group_count))
-        )
+        panel["group"] = panel.groupby("trade_date", group_keys=False)[
+            "score"
+        ].transform(lambda s: assign_groups(s, self.group_count))
         return panel
 
     def generate_targets(self, panel: pd.DataFrame) -> pd.DataFrame:
@@ -140,5 +141,7 @@ class LightGBMStrategy(BaseStrategy):
         if self.top_group_only:
             scored = scored[scored["group"] == self.group_count]
         scores = scored[["trade_date", "ts_code", "score"]]
-        picker = equal_weight_top_n if self.config.weight == "equal" else score_weight_top_n
+        picker = (
+            equal_weight_top_n if self.config.weight == "equal" else score_weight_top_n
+        )
         return picker(scores, self.config.top_n)

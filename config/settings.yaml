@@ -13,7 +13,7 @@ data_source:
   tushare:
     # 从 https://tushare.pro 获取你的 token，替换下面字符串
     # 也可以通过环境变量 TUSHARE_TOKEN 覆盖
-    token: "YOUR_TUSHARE_TOKEN_HERE"
+    token: "03335f7533f76e95e500b140aac9870802f1cd21d78ebf46a669b373"
     timeout: 30
   akshare:
     timeout: 30
@@ -23,7 +23,7 @@ database:
   host: localhost
   port: 5432
   user: postgres
-  password: "postgres"           # 也可通过环境变量 QUANTMATE_DB_PASSWORD 覆盖
+  password: "123123"             # 也可通过环境变量 QUANTMATE_DB_PASSWORD 覆盖
   database: quantmate            # 程序会自动创建此库 (init_db.py)
   # SQLAlchemy URL 会由 utils/config.py 拼接, 无需手动维护
 

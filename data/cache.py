@@ -39,8 +39,19 @@ def cache_key(api: str, **kwargs: Any) -> str:
 def load_csv_cache(key: str) -> Optional[pd.DataFrame]:
     p = _cache_dir() / f"{key}.csv"
     if p.exists():
-        log.debug("cache HIT  %s", p.name)
-        return pd.read_csv(p)
+        if p.stat().st_size == 0:
+            log.debug("cache EMPTY (skip) %s", p.name)
+            return None
+        try:
+            df = pd.read_csv(p)
+            if df.empty:
+                return None
+            log.debug("cache HIT  %s", p.name)
+            return df
+        except Exception:
+            log.debug("cache CORRUPT (skip) %s", p.name)
+            p.unlink(missing_ok=True)
+            return None
     log.debug("cache MISS %s", p.name)
     return None
 

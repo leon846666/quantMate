@@ -22,7 +22,7 @@ class MomentumStrategy(BaseStrategy):
         df = panel.sort_values(["ts_code", "trade_date"]).copy()
         df["score"] = (
             df.groupby("ts_code", group_keys=False)["close"]
-              .apply(lambda s: s.pct_change(self.lookback))
+              .transform(lambda s: s.pct_change(self.lookback))
         )
         df = df.dropna(subset=["score"])
         scores = df[["trade_date", "ts_code", "score"]]

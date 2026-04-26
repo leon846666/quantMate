@@ -36,15 +36,37 @@ def ingest_stock_basic() -> int:
     return database.upsert_df(df, "stock_basic", pk_cols=["ts_code"])
 
 
-def ingest_daily_bars(ts_codes: Iterable[str], start: str, end: str) -> int:
+def ingest_daily_bars(
+    ts_codes: Iterable[str],
+    start: str,
+    end: str,
+    adj: str = "qfq",
+    write_pg: bool = True,
+) -> int:
+    """Fetch OHLCV for each stock, save to Parquet and (optionally) PostgreSQL."""
+    codes = list(ts_codes)
     total = 0
-    for code in tqdm(list(ts_codes), desc="daily OHLCV"):
-        df = fetcher.fetch_daily(code, start, end)
+    for code in tqdm(codes, desc="daily OHLCV"):
+        df = fetcher.fetch_daily(code, start, end, adj=adj)
         if df.empty:
+            log.warning("No data returned for %s", code)
             continue
-        cache.save_parquet(code, df)   # store OHLCV in parquet, not PG
+        # 1) Parquet
+        cache.save_parquet(code, df)
+        # 2) PostgreSQL daily_ohlcv
+        if write_pg:
+            pg_df = df.copy()
+            pg_df["adj"] = adj
+            pg_df["trade_date"] = pd.to_datetime(pg_df["trade_date"]).dt.date
+            if "currency" not in pg_df.columns:
+                pg_df["currency"] = fetcher.infer_currency(code)
+            database.upsert_df(
+                pg_df[["ts_code","trade_date","open","high","low","close","vol","amount","adj","currency"]],
+                table="daily_ohlcv",
+                pk_cols=["ts_code","trade_date","adj"],
+            )
         total += len(df)
-    log.info("Daily OHLCV ingested: %d rows across %d stocks", total, len(list(ts_codes)))
+    log.info("Daily OHLCV ingested: %d rows across %d stocks", total, len(codes))
     return total
 
 

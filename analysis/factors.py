@@ -27,6 +27,7 @@ from analysis._registry import register_factor
 # Momentum / reversal family
 # ============================================================
 
+
 @register_factor("mom_5")
 def mom_5(df: pd.DataFrame) -> pd.Series:
     """5-day return"""
@@ -63,6 +64,7 @@ def reversal_5(df: pd.DataFrame) -> pd.Series:
 # Volatility
 # ============================================================
 
+
 @register_factor("vol_20")
 def vol_20(df: pd.DataFrame) -> pd.Series:
     return df["close"].pct_change().rolling(20).std()
@@ -83,6 +85,7 @@ def downside_vol_20(df: pd.DataFrame) -> pd.Series:
 # ============================================================
 # Liquidity / volume
 # ============================================================
+
 
 @register_factor("turnover_5")
 def turnover_5(df: pd.DataFrame) -> pd.Series:
@@ -111,6 +114,7 @@ def volume_ratio_5_20(df: pd.DataFrame) -> pd.Series:
 # ============================================================
 # Valuation
 # ============================================================
+
 
 @register_factor("ep")
 def ep(df: pd.DataFrame) -> pd.Series:
@@ -148,6 +152,7 @@ def dp(df: pd.DataFrame) -> pd.Series:
 # Size
 # ============================================================
 
+
 @register_factor("log_mcap")
 def log_mcap(df: pd.DataFrame) -> pd.Series:
     if "total_mv" not in df.columns:
@@ -158,6 +163,7 @@ def log_mcap(df: pd.DataFrame) -> pd.Series:
 # ============================================================
 # Technical
 # ============================================================
+
 
 @register_factor("price_to_ma20")
 def price_to_ma20(df: pd.DataFrame) -> pd.Series:
@@ -200,6 +206,7 @@ def kurt_20(df: pd.DataFrame) -> pd.Series:
 # ============================================================
 # Label (future return) — NOT a factor; used to build y
 # ============================================================
+
 
 def future_return(df: pd.DataFrame, horizon: int = 5) -> pd.Series:
     """Forward return — THIS USES FUTURE DATA INTENTIONALLY.

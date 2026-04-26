@@ -13,6 +13,9 @@ tushare>=1.4
 akshare>=1.12          # optional fallback; free, no token needed
 requests>=2.31
 
+# --- technical indicators ---
+ta-lib>=0.6
+
 # --- ML ---
 lightgbm>=4.1
 scikit-learn>=1.3

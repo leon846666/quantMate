@@ -85,6 +85,23 @@ CREATE TABLE IF NOT EXISTS moneyflow (
     PRIMARY KEY (ts_code, trade_date)
 );
 
+-- daily_ohlcv: 日线行情 (前复权)，同时也以 Parquet 存储在 data/market/
+CREATE TABLE IF NOT EXISTS daily_ohlcv (
+    ts_code    VARCHAR(16),
+    trade_date DATE,
+    open       DOUBLE PRECISION,
+    high       DOUBLE PRECISION,
+    low        DOUBLE PRECISION,
+    close      DOUBLE PRECISION,
+    vol        DOUBLE PRECISION,
+    amount     DOUBLE PRECISION,
+    adj        VARCHAR(8)   DEFAULT 'qfq',
+    currency   VARCHAR(8)   DEFAULT 'CNY',
+    PRIMARY KEY (ts_code, trade_date, adj)
+);
+CREATE INDEX IF NOT EXISTS idx_daily_ohlcv_date   ON daily_ohlcv(trade_date);
+CREATE INDEX IF NOT EXISTS idx_daily_ohlcv_code   ON daily_ohlcv(ts_code);
+
 -- factor_values: 计算好的因子快照 (便于回测时直接读)
 CREATE TABLE IF NOT EXISTS factor_values (
     trade_date  DATE,

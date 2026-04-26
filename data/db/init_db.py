@@ -28,6 +28,7 @@ log = get_logger("init_db")
 SCHEMA_SQL = Path(__file__).with_name("schema.sql")
 EXPECTED_TABLES = [
     "stock_basic",
+    "daily_ohlcv",
     "daily_basic",
     "adj_factor",
     "suspend",

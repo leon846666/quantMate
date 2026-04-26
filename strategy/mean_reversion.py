@@ -32,7 +32,7 @@ class MeanReversionStrategy(BaseStrategy):
             return (s - mu) / sd
 
         df["zs"] = (
-            df.groupby("ts_code", group_keys=False)["close"].apply(_zscore)
+            df.groupby("ts_code", group_keys=False)["close"].transform(_zscore)
         )
         df["score"] = -df["zs"]          # more negative z → higher score
         df = df[df["zs"] <= self.zscore_threshold]

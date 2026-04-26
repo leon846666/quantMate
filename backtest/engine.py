@@ -92,14 +92,19 @@ def run_backtest(
 
     pf = Portfolio(cash=config.initial_cash)
     exec_cfg = config.execution
+    last_prices: dict[str, float] = {}   # 持续维护最后已知价格，避免休市日归零
 
     for d in all_dates:
         prices_today = price_matrix.loc[d].dropna().to_dict()
+        last_prices.update(prices_today)   # 只更新有报价的股票
+        # 用最后已知价格做市值估算（持仓中无今日报价的股票用昨日价）
+        prices_for_nav = {**last_prices, **prices_today}
 
         if d in rebalance_set:
+            # 调仓只用今日有报价的股票
             _rebalance(pf, d, prices_today, targets_by_date.get(d), exec_cfg)
 
-        pf.snapshot(d, prices_today)
+        pf.snapshot(d, prices_for_nav)
 
     nav_df = pf.nav_frame()
     trades_df = pf.trade_frame()
