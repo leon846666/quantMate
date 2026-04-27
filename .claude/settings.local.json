@@ -1,14 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pip install:*)",
-      "Bash(python -c ':*)",
-      "Bash(TUSHARE_TOKEN=\"03335f7533f76e95e500b140aac9870802f1cd21d78ebf46a669b373\" python scripts/fetch_watchlist.py --no-pg)",
-      "Bash(TUSHARE_TOKEN=\"03335f7533f76e95e500b140aac9870802f1cd21d78ebf46a669b373\" python scripts/fetch_watchlist.py)",
-      "Bash(python scripts/run_backtest.py --no-plot)",
-      "Bash(python -c \"import sys; [print\\(l.rstrip\\(\\)\\) for l in sys.stdin if any\\(k in l for k in ['HKD','CNY','已加载','总收益','CAGR','夏普','回撤','Calmar','胜率','波动','momentum','策略','区间']\\)]\")",
-      "WebFetch(domain:github.com)",
-      "WebFetch(domain:raw.githubusercontent.com)"
-    ]
+      "Bash(python main.py --fetch --start 2023-01-01 --end 2024-12-31)",
+      "Bash(python -c \"import sys; print(sys.executable)\")",
+      "Bash(\".\\.venv\\Scripts\\python.exe\" -c \"import pandas; print(''pandas available'')\")",
+      "Bash(\".\\.venv\\Scripts\\python.exe\" scripts/fetch_csi300.py --start 2023-01-01 --end 2024-12-31 --batch-size 10)"
+    ],
+    "deny": [],
+    "ask": []
   }
 }

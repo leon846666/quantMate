@@ -263,7 +263,7 @@ def run(
     # NAV → 日收益率序列（QuantStats 标准输入）
     returns = nav_df["nav"].pct_change().dropna()
     returns.index = pd.to_datetime(returns.index)
-    returns.name = strategy_name
+    returns.name = title
 
     # 等权 benchmark 收益率
     price_wide = panel.pivot(index="trade_date", columns="ts_code", values="close").ffill()

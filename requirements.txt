@@ -25,6 +25,10 @@ scipy>=1.11
 matplotlib>=3.8
 seaborn>=0.13
 plotly>=5.18
+quantstats>=0.0.62         # backtest performance analytics
+
+# --- backtest ---
+backtrader>=1.9            # professional backtesting framework
 
 # --- dev / test ---
 pytest>=7.4
