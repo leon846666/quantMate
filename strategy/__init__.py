@@ -9,6 +9,8 @@ from strategy.lightgbm_strategy import (
     load_booster,
     assign_groups,
 )
+from strategy.composite_score_strategy import CompositeScoreStrategy
+from strategy.volume_ranking_strategy import VolumeRankingStrategy
 
 __all__ = [
     "BaseStrategy",
@@ -23,4 +25,6 @@ __all__ = [
     "save_booster",
     "load_booster",
     "assign_groups",
+    "CompositeScoreStrategy",
+    "VolumeRankingStrategy",
 ]
